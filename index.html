@@ -1,0 +1,49 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Todo App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+  <script src="bower_components/underscore/underscore.js'"></script>
+  <script src="bower_components/backbone/backbone.js"></script>
+</head>
+
+<body>
+  
+  <div id="main">
+    <h1>You're ready to use Parse!</h1>
+
+  </div>
+
+  <div class="container">
+    <h1>My Bucket List</h1>
+    <table class="table">
+      
+    </table>
+  </div>
+
+  <script type="text/javascript">
+    // Parse.initialize("APPLICATION_ID", "JAVASCRIPT_KEY");
+  Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
+
+    var Todo = Parse.Object.extend("Todo");
+    var todo = new Todo();
+      todo.set('todo', 'my second todo');
+      todo.save({
+      success: function() {
+        // $(".success").show();
+      },
+      error: function() {
+        // $(".error").show();
+        console.log("Error:"+error.message);
+      }
+    });
+  </script>
+</body>
+
+</html>
