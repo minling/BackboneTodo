@@ -23,42 +23,63 @@
         <tr>
           <td><input class="form-control task-input" /></td>
           <td><input class="form-control priority-input" /></td>
-          <td><button class="btn btn-success add-todo">Add</button></td>
+          <td><button class="btn btn-success add-todo">Add Task</button></td>
         </tr>
       </thead>
       <tbody class="todos-list"></tbody>
     </table>
   </div>
 
+
   <script type="text/template" class="todos-list-template">
     <td><span class="task"><%= task %></span></td>
     <td><span class="priority"><%= priority %></span></td>
-    <td><button class="btn btn-success finished-todo">Done</button></td>
+    <td><button class="btn btn-info finished-todo">Finished</button></td>
     <td><button class="btn btn-danger delete-todo">Delete</button></td>
+  </script>
+
+  <div class="container completed">
+    <h1>Completed Tasks</h1>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody class="completed-todos-list"></tbody>
+    </table>
+  </div>
+
+  <script type="text/template" class="completed-todos-template">
+    <td><span class="task-completed"><%= completedTask %></span></td>
+    <td><span class="priority-completed"><%= completedPriority %></span></td>
   </script>
 
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/backbone/backbone.js"></script>
   <script src="scripts.js"></script>
+
   <script type="text/javascript">
 
-    // Parse.initialize("APPLICATION_ID", "JAVASCRIPT_KEY");
-  Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
+  //   // Parse.initialize("APPLICATION_ID", "JAVASCRIPT_KEY");
+  // Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
 
-    // var Todo = Parse.Object.extend("Todo");
-    // var todo = new Todo();
-    //   todo.set('todo', 'almost finished');
-    //   todo.save({
-    //   success: function() {
-    //     // $(".success").show();
-    //   },
-    //   error: function() {
-    //     // $(".error").show();
-    //     console.log("Error:"+error.message);
-    //   }
-    // });
-  </script>
+  //   var Todo = Parse.Object.extend("Todo");
+  //   var todoObject = new Todo();
+  //     debugger;
+  //     todoObject.set('todo', 'almost finished');
+  //     todoObject.save({
+  //     success: function() {
+  //       // $(".success").show();
+  //     },
+  //     error: function() {
+  //       // $(".error").show();
+  //       console.log("Error:"+error.message);
+  //     }
+  //   });
+  // </script>
 
 </body>
 
