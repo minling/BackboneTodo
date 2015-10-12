@@ -12,8 +12,10 @@ var CompletedTodo = Backbone.Model.extend({
   }
 });
 
-
-var Todos = Backbone.Collection.extend({});
+// url does not work(got from a tutorial)
+var Todos = Backbone.Collection.extend({
+  // url: 'http://localhost:3000/api/todos'
+});
 
 var todos = new Todos();
 
@@ -56,6 +58,17 @@ var TodosView = Backbone.View.extend({
   initialize: function() {
     this.model.on('add', this.render, this);
     this.model.on('remove', this.render, this);
+    // does not work because i'm not fetching anything from the url above
+    this.model.fetch({
+      success: function(response){
+        _.each(response.toJSON(), function(item) {
+          console.log('Successfully GOT todo with _id: '+ item._id);
+        });
+      },
+      error: function() {
+        console.log('Failed to get blogs!');
+      }
+    })
   },
   render: function() {
     var self = this;
@@ -107,7 +120,6 @@ $(document).ready(function() {
       task: $('.task-input').val(),
       priority: $('.priority-input').val()
     });
-    debugger;
     var taskInput = $('.task-input').val()
     var priorityInput = $('.priority-input').val()
     Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
@@ -121,22 +133,6 @@ $(document).ready(function() {
   });
 });
 
-// var TestObject = Parse.Object.extend("TestObject");
-// var testObject = new TestObject();
-// testObject.save({foo: "bar"}).then(function(object) {
-//   alert("yay! it worked");
-// });
-
-// todoObject.set('todo', 'almost finished');
-  //     todoObject.save({
-  //     success: function() {
-  //       // $(".success").show();
-  //     },
-  //     error: function() {
-  //       // $(".error").show();
-  //       console.log("Error:"+error.message);
-  //     }
-  //   });
 
 
 
