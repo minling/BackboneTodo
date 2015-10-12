@@ -59,16 +59,16 @@ var TodosView = Backbone.View.extend({
     this.model.on('add', this.render, this);
     this.model.on('remove', this.render, this);
     // does not work because i'm not fetching anything from the url above
-    this.model.fetch({
-      success: function(response){
-        _.each(response.toJSON(), function(item) {
-          console.log('Successfully GOT todo with _id: '+ item._id);
-        });
-      },
-      error: function() {
-        console.log('Failed to get blogs!');
-      }
-    })
+    // this.model.fetch({
+    //   success: function(response){
+    //     _.each(response.toJSON(), function(item) {
+    //       console.log('Successfully GOT todo with _id: '+ item._id);
+    //     });
+    //   },
+    //   error: function() {
+    //     console.log('Failed to get blogs!');
+    //   }
+    // })
   },
   render: function() {
     var self = this;
