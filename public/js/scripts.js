@@ -5,6 +5,8 @@ var Todo = Backbone.Model.extend({
   }
 });
 
+// var parse = require('parse');
+
 var CompletedTodo = Backbone.Model.extend({
   defaults: {
     completedTask: '',
@@ -12,9 +14,8 @@ var CompletedTodo = Backbone.Model.extend({
   }
 });
 
-// url does not work(got from a tutorial)
 var Todos = Backbone.Collection.extend({
-  // url: 'http://localhost:3000/api/todos'
+  // url: 'https://G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN:javascript-key=5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB@api.parse.com/1/classes/TodoObject/G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN'
 });
 
 var todos = new Todos();
@@ -58,7 +59,13 @@ var TodosView = Backbone.View.extend({
   initialize: function() {
     this.model.on('add', this.render, this);
     this.model.on('remove', this.render, this);
-    // does not work because i'm not fetching anything from the url above
+    Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
+    (new Parse.Query('TodoObject'))
+      .find()
+      .then(function(res) {
+        debugger;
+        console.log(res)
+      })
     // this.model.fetch({
     //   success: function(response){
     //     _.each(response.toJSON(), function(item) {
