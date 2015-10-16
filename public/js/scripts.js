@@ -40,6 +40,7 @@ var TodoView = Backbone.View.extend({
       completedTask: this.$('.task').html(),
       completedPriority: this.$('.priority').html()
     });
+    debugger;
     completedTodos.add(completed);
     this.model.destroy();
   },
@@ -62,9 +63,28 @@ var TodosView = Backbone.View.extend({
     Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
     (new Parse.Query('TodoObject'))
       .find()
-      .then(function(res) {
-        debugger;
-        console.log(res)
+      .then(function(response) {
+        // debugger;
+        // var output = "";
+        // for (var i in response ) {
+        //   var task = response[i].get("task");
+        //   var priority = response[i].get("priority");
+        //   output += '<li><td><span class="task">' + task + '</span></td>'
+        //   output += '<td><span class="task">' + priority + '</span></td>'
+        //   output += '<td><button class="btn btn-info finished-todo">Finished</button></td>' + '<td><button class="btn btn-danger delete-todo">Delete</button></td><li>'
+        // }
+        // $('.todos-list').append(output);
+        response.forEach( function(object) {
+          // debugger;
+          var task = object.get('task')
+          var priority = object.get('priority')
+          var taskTd = '<tr><td><span class="task">' + task + '</span></td>'
+          var priorityTd = '<td><span class="task">' + priority + '</span></td>'
+          var buttons = '<td><button class="btn btn-info finished-todo">Finished</button></td>' + '<td><button class="btn btn-danger delete-todo">Delete</button></td></tr>'
+          // debugger;
+
+          $('.todos-list').append(taskTd + priorityTd + buttons)
+        })
       })
     // this.model.fetch({
     //   success: function(response){
@@ -79,7 +99,6 @@ var TodosView = Backbone.View.extend({
   },
   render: function() {
     var self = this;
-    this.$el.html('');
     _.each(this.model.toArray(), function(todo) {
       self.$el.append((new TodoView({model: todo})).render().$el);
     });
