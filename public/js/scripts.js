@@ -104,7 +104,6 @@ var TodosView = Backbone.View.extend({
             priority: object.get('priority'),
             status: 'unfinished',
             parse_id: object.id
-
           });
           self.$el.append((new TodoView({model: todo})).render().$el);
         })
