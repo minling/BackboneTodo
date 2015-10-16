@@ -1,8 +1,10 @@
+Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
+
 var Todo = Backbone.Model.extend({
   defaults: {
     task: '',
     priority: '',
-    status: 'unfinished'
+    status: ''
   }
 });
 
@@ -12,7 +14,7 @@ var CompletedTodo = Backbone.Model.extend({
   defaults: {
     completedTask: '',
     completedPriority: '',
-    status: 'finished'
+    status: ''
   }
 });
 
@@ -38,19 +40,45 @@ var TodoView = Backbone.View.extend({
     'click .delete-todo' : 'delete'
   },
   done: function() {
-    alert("hey");
     var completed = new CompletedTodo({
       completedTask: this.$('.task').html(),
-      completedPriority: this.$('.priority').html()
+      completedPriority: this.$('.priority').html(),
+      status: 'finished'
     });
-    debugger;
+
+    var CompletedObject = Parse.Object.extend("CompletedObject");
+    var completedObject = new CompletedObject();
+    completedObject.save({completedTask: this.$('.task').html(), completedPriority: this.$('.priority').html(), status: 'finished'})
     completedTodos.add(completed);
-    debugger;
+
+    var parseId = this.model.attributes.parse_id;
+    var TodoObject = Parse.Object.extend('TodoObject');
+    var query = new Parse.Query(TodoObject);
+    query.get(parseId, {
+      success: function(object) {
+        object.destroy();
+      },
+      error: function(object, error){
+        console.log('There is an error in deletion in done event')
+      }
+    }) 
     this.model.destroy();
     this.$el.html('');
   },
   delete: function() {
+    var parseId = this.model.attributes.parse_id;
+    var TodoObject = Parse.Object.extend('TodoObject');
+    var query = new Parse.Query(TodoObject);
+    query.get(parseId, {
+      success: function(object) {
+        object.destroy();
+      },
+      error: function(object, error){
+        console.log("There is an error in deletion in delete event")
+      }
+    });
     this.model.destroy();
+    this.$el.html('');
   },
   render: function() {
     this.$el.html(this.template(this.model.toJSON()));
@@ -63,26 +91,29 @@ var TodosView = Backbone.View.extend({
   model: todos,
   el: $('.todos-list'), 
   initialize: function() {
+    var self = this;
     this.model.on('add', this.render, this);
     this.model.on('remove', this.render, this);
-    Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
     (new Parse.Query('TodoObject'))
       .equalTo('status','unfinished')
       .find()
       .then(function(response) {
         response.forEach( function(object) {
-          var task = object.get('task')
-          var priority = object.get('priority')
-          var taskTd = '<tr><td><span class="task">' + task + '</span></td>'
-          var priorityTd = '<td><span class="task">' + priority + '</span></td>'
-          var buttons = '<td><button class="btn btn-info finished-todo">Finished</button></td>' + '<td><button class="btn btn-danger delete-todo">Delete</button></td></tr>'
-          $('.todos-list').append(taskTd + priorityTd + buttons)
+          var todo = new Todo({
+            task: object.get('task'),
+            priority: object.get('priority'),
+            status: 'unfinished',
+            parse_id: object.id
+
+          });
+          self.$el.append((new TodoView({model: todo})).render().$el);
         })
       })
   },
   render: function() {
     var self = this;
     // this.$el.html('');
+    console.log(this.model.toJSON());
     _.each(this.model.toArray(), function(todo) {
       self.$el.append((new TodoView({model: todo})).render().$el);
     });
@@ -108,11 +139,26 @@ var CompletedTodosView = Backbone.View.extend({
   model: completedTodos,
   el: $('.completed-todos-list'), 
   initialize: function() {
+    var self = this;
     this.model.on('add', this.render, this);
+    (new Parse.Query('CompletedObject'))
+      .equalTo('status','finished')
+      .find()       
+      .then(function(response) {
+        response.forEach( function(object) {
+          var completedTodo = new CompletedTodo({
+            completedTask: object.get('completedTask'),
+            completedPriority: object.get('completedPriority'),
+            status: 'finished',
+            parse_id: object.id
+          });
+          self.$el.append((new CompletedTodoView({model: completedTodo})).render().$el);
+        })
+      })
   },
   render: function() {
     var self = this;
-    this.$el.html('');
+    // this.$el.html('');
     _.each(this.model.toArray(), function(completedTodo) {
       self.$el.append((new CompletedTodoView({model: completedTodo})).render().$el);
     });
@@ -133,7 +179,6 @@ $(document).ready(function() {
     });
     var taskInput = $('.task-input').val()
     var priorityInput = $('.priority-input').val()
-    Parse.initialize("G4X5y6WDZ51U9g0Iv1LcyaOeT2DsFDgNFS350BkN", "5P3GTnoyFwx8sPu9YT5sP7vl3aAtH1xN8l6T6MVB");
     var TodoObject = Parse.Object.extend("TodoObject");
     var todoObject = new TodoObject();
     todoObject.save({task: taskInput, priority: priorityInput, status: 'unfinished'})
